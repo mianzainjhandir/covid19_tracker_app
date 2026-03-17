@@ -2,6 +2,8 @@ import 'package:covid19_app/model/WorldStatesModel.dart';
 import 'package:covid19_app/services/states_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 class WorldStatesScreen extends StatefulWidget {
@@ -63,6 +65,9 @@ class _WorldStatesScreenState extends State<WorldStatesScreen> with TickerProvid
                             "Recovered": double.parse(snapshot.data!.recovered.toString()),
                             "Death": double.parse(snapshot.data!.deaths.toString()),
                           },
+                          chartValuesOptions: const ChartValuesOptions(
+                            showChartValuesInPercentage: true,
+                          ),
                           animationDuration: const Duration(milliseconds: 1200),
                           chartRadius: MediaQuery.of(context).size.width / 3.2,
                           legendOptions: const LegendOptions(
@@ -77,21 +82,29 @@ class _WorldStatesScreenState extends State<WorldStatesScreen> with TickerProvid
                           child: Card(
                             child: Column(
                               children: [
-                                ReuseableRow(title: "Total", value: "20"),
-                                ReuseableRow(title: "Recovered", value: "15"),
-                                ReuseableRow(title: "Death", value: "5"),
+                                ReuseableRow(title: "Total", value: snapshot.data!.cases.toString()),
+                                ReuseableRow(title: "Recovered", value: snapshot.data!.recovered.toString()),
+                                ReuseableRow(title: "Death", value: snapshot.data!.deaths.toString()),
+                                ReuseableRow(title: "Active", value: snapshot.data!.active.toString()),
+                                ReuseableRow(title: "Critical", value: snapshot.data!.critical.toString()),
+                                ReuseableRow(title: "Today Deaths", value: snapshot.data!.todayDeaths.toString()),
                               ],
                             ),
                           ),
                         ),
-                        Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Color(0xff1aa260),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Center(
-                            child: Text("Track Countries"),
+                        GestureDetector(
+                          onTap: (){
+                            Get.to(() => const CountriesListScreen());
+                  },
+                          child: Container(
+                            height: 39,
+                            decoration: BoxDecoration(
+                              color: Color(0xff1aa260),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Center(
+                              child: Text("Track Countries"),
+                            ),
                           ),
                         )
                       ],
