@@ -1,4 +1,7 @@
+import 'package:covid19_app/model/WorldStatesModel.dart';
+import 'package:covid19_app/services/states_services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 class WorldStatesScreen extends StatefulWidget {
@@ -31,6 +34,7 @@ class _WorldStatesScreenState extends State<WorldStatesScreen> with TickerProvid
 
   @override
   Widget build(BuildContext context) {
+    StateServices stateServices = StateServices();
     return Scaffold(
       backgroundColor: Colors.black12,
       body: SafeArea(child: Padding(
@@ -38,43 +42,66 @@ class _WorldStatesScreenState extends State<WorldStatesScreen> with TickerProvid
         child: Column(
           children: [
             SizedBox(height: MediaQuery.of(context).size.height * .01,),
-            PieChart(
-              dataMap: const{
-                "Total": 20,
-                "Recovered": 15,
-                "Death": 5,
-              },
-              animationDuration: const Duration(milliseconds: 1200),
-              chartRadius: MediaQuery.of(context).size.width / 3.2,
-              legendOptions: const LegendOptions(
-                legendPosition: LegendPosition.left,
-              ),
-              chartType: ChartType.ring,
-              colorList: colorList,
+            FutureBuilder(
+                future: stateServices.fetchWorldStatesRecords(),
+                builder: (context, AsyncSnapshot<WorldStatesModel> snapshot){
+                  if(!snapshot.hasData){
+                    return Expanded(
+                      flex: 1,
+                        child: SpinKitFadingCircle(
+                          color: Colors.white,
+                          size: 50.0,
+                          controller: _controller,
+                        )
+                    );
+                  }else{
+                    return Column(
+                      children: [
+                        PieChart(
+                          dataMap: {
+                            "Total": double.parse(snapshot.data!.cases!.toString()),
+                            "Recovered": double.parse(snapshot.data!.recovered.toString()),
+                            "Death": double.parse(snapshot.data!.deaths.toString()),
+                          },
+                          animationDuration: const Duration(milliseconds: 1200),
+                          chartRadius: MediaQuery.of(context).size.width / 3.2,
+                          legendOptions: const LegendOptions(
+                            legendPosition: LegendPosition.left,
+                          ),
+                          chartType: ChartType.ring,
+                          colorList: colorList,
 
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10 ),
+                          child: Card(
+                            child: Column(
+                              children: [
+                                ReuseableRow(title: "Total", value: "20"),
+                                ReuseableRow(title: "Recovered", value: "15"),
+                                ReuseableRow(title: "Death", value: "5"),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Color(0xff1aa260),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Center(
+                            child: Text("Track Countries"),
+                          ),
+                        )
+                      ],
+                    );
+                  }
+
+                }
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10 ),
-              child: Card(
-                child: Column(
-                  children: [
-                    ReuseableRow(title: "Total", value: "20"),
-                    ReuseableRow(title: "Recovered", value: "15"),
-                    ReuseableRow(title: "Death", value: "5"),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              height: 50,
-              decoration: BoxDecoration(
-                color: Color(0xff1aa260),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Center(
-                child: Text("Track Countries"),
-              ),
-            )
+
+
           ],
         ),
       )),
