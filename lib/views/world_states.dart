@@ -90,6 +90,7 @@ class _WorldStatesScreenState extends State<WorldStatesScreen> with TickerProvid
                                 ReuseableRow(title: "Active", value: snapshot.data!.active.toString()),
                                 ReuseableRow(title: "Critical", value: snapshot.data!.critical.toString()),
                                 ReuseableRow(title: "Today Deaths", value: snapshot.data!.todayDeaths.toString()),
+                                ReuseableRow(title: 'Today Recovered', value: snapshot.data!.todayRecovered.toString()),
                               ],
                             ),
                           ),
