@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:pie_chart/pie_chart.dart';
 
+import 'countries_list.dart';
+
 class WorldStatesScreen extends StatefulWidget {
   const WorldStatesScreen({super.key});
 
