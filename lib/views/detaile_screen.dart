@@ -51,7 +51,6 @@ class _DetaileScreenState extends State<DetaileScreen> {
                       ReuseableRow(title: 'Death', value: widget.totalDeaths.toString()),
                       ReuseableRow(title: 'Active', value: widget.active.toString()),
                       ReuseableRow(title: 'Critical', value: widget.critical.toString()),
-                      ReuseableRow(title: 'Recovered', value: widget.todayRecovered.toString()),
 
                     ],
                   ),
