@@ -1,7 +1,10 @@
 
 import 'package:covid19_app/services/states_services.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
+
+import 'detaile_screen.dart';
 
 class CountriesListScreen extends StatefulWidget {
   const CountriesListScreen({super.key});
@@ -77,15 +80,31 @@ class _CountriesListState extends State<CountriesListScreen> {
                           if(searchController.text.isEmpty){
                             return Column(
                               children: [
-                                ListTile(
-                                  title: Text(snapshot.data![index]['country']),
-                                  subtitle: Text(snapshot.data![index]['cases'].toString()),
-                                  leading: Image(
-                                      height: 50,
-                                      width: 50,
-                                      image: NetworkImage(
+                                GestureDetector(
+                                  onTap: (){
+                                    Get.to(() => DetaileScreen(
+                                      image: snapshot.data![index]['countryInfo']['flag'],
+                                      name: snapshot.data![index]['country'],
+                                      totalCases: snapshot.data![index]['cases'],
+                                      totalDeaths: snapshot.data![index]['deaths'],
+                                      totalRecovered: snapshot.data![index]['Recovered'],
+                                      active: snapshot.data![index]['Active'],
+                                      critical: snapshot.data![index]['critical'],
+                                      todayRecovered: snapshot.data![index]['todayRecovered'],
+                                      test: snapshot.data![index]['tests'],
 
-                                          snapshot.data![index]['countryInfo']['flag'])),
+                                    ));
+                            },
+                                  child: ListTile(
+                                    title: Text(snapshot.data![index]['country']),
+                                    subtitle: Text(snapshot.data![index]['cases'].toString()),
+                                    leading: Image(
+                                        height: 50,
+                                        width: 50,
+                                        image: NetworkImage(
+
+                                            snapshot.data![index]['countryInfo']['flag'])),
+                                  ),
                                 )
                               ],
                             );
@@ -110,10 +129,6 @@ class _CountriesListState extends State<CountriesListScreen> {
                           }
                           });
                     }
-
-
-
-
                   })
           )
         ],
