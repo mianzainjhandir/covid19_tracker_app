@@ -10,6 +10,7 @@ class StateServices{
     final response = await http.get(Uri.parse(AppUrl.worldStateApi));
 
 
+
     if(response.statusCode == 200){
 
       var data = jsonDecode(response.body.toString());
