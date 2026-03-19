@@ -87,8 +87,8 @@ class _CountriesListState extends State<CountriesListScreen> {
                                       name: snapshot.data![index]['country'],
                                       totalCases: snapshot.data![index]['cases'],
                                       totalDeaths: snapshot.data![index]['deaths'],
-                                      totalRecovered: snapshot.data![index]['Recovered'],
-                                      active: snapshot.data![index]['Active'],
+                                      totalRecovered: snapshot.data![index]['recovered'],
+                                      active: snapshot.data![index]['active'],
                                       critical: snapshot.data![index]['critical'],
                                       todayRecovered: snapshot.data![index]['todayRecovered'],
                                       test: snapshot.data![index]['tests'],
@@ -111,15 +111,31 @@ class _CountriesListState extends State<CountriesListScreen> {
                           }else if(name.toLowerCase().contains(searchController.text.toLowerCase())){
                             return Column(
                               children: [
-                                ListTile(
-                                  title: Text(snapshot.data![index]['country']),
-                                  subtitle: Text(snapshot.data![index]['cases'].toString()),
-                                  leading: Image(
-                                      height: 50,
-                                      width: 50,
-                                      image: NetworkImage(
+                                InkWell(
+                                onTap: (){
+                              Get.to(() => DetaileScreen(
+                                image: snapshot.data![index]['countryInfo']['flag'],
+                                name: snapshot.data![index]['country'],
+                                totalCases: snapshot.data![index]['cases'],
+                                totalDeaths: snapshot.data![index]['deaths'],
+                                totalRecovered: snapshot.data![index]['recovered'],
+                                active: snapshot.data![index]['active'],
+                                critical: snapshot.data![index]['critical'],
+                                todayRecovered: snapshot.data![index]['todayRecovered'],
+                                test: snapshot.data![index]['tests'],
 
-                                          snapshot.data![index]['countryInfo']['flag'])),
+                              ));
+                            },
+                                  child: ListTile(
+                                    title: Text(snapshot.data![index]['country']),
+                                    subtitle: Text(snapshot.data![index]['cases'].toString()),
+                                    leading: Image(
+                                        height: 50,
+                                        width: 50,
+                                        image: NetworkImage(
+
+                                            snapshot.data![index]['countryInfo']['flag'])),
+                                  ),
                                 )
                               ],
                             );
